@@ -90,54 +90,6 @@ void backtrace(int count)
 	}
 }
 
-void replace();
-void print();
-void random();
-void xuehao();
-
-int main(int argc, char *argv[])
-{
-	if (strcmp(argv[1], "-s") == 0)
-	{
-		flag = 0;
-		ocout.open("E:\\项目\\数独\\Debug\\sudoku.txt");
-		for (int i = 0; i < 9; i++)
-		{
-			for (int j = 0; j < 9; j++)
-			{
-				scanf("%d", &chess[i][j]);
-			}
-		}
-		backtrace(0);
-		ocout.close();
-		system("pause");
-		return 0;
-	}
-	else if (strcmp(argv[1], "-c") == 0 && atoi(argv[2]) > 0 && atoi(argv[2]) <= 1000000)
-	{
-		clock_t start, finish;
-		double totaltime;
-		ocout.open("E:\\项目\\数独\\Debug\\sudoku.txt");
-		start = clock();
-		for (int i = 0; i < atoi(argv[2]); i++)
-		{
-			xuehao();
-			replace();
-			print();
-		}
-		finish = clock();
-		totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
-		ocout << "\n所需的时间是" << totaltime << "s" << endl;
-		ocout.close();
-		system("pause");
-	}
-	else
-	{
-		printf("wrong\n");
-	}
-	return 0;
-}
-
 void random()
 {
 	for (int i = 0; i < 9; i++)
@@ -201,4 +153,47 @@ void print()
 		ocout << "\n";
 	}
 	ocout << "\n";
+}
+
+int main(int argc, char *argv[])
+{
+	if (strcmp(argv[1], "-s") == 0)
+	{
+		flag = 0;
+		ocout.open("E:\\项目\\数独\\Debug\\sudoku.txt");
+		for (int i = 0; i < 9; i++)
+		{
+			for (int j = 0; j < 9; j++)
+			{
+				scanf("%d", &chess[i][j]);
+			}
+		}
+		backtrace(0);
+		ocout.close();
+		system("pause");
+		return 0;
+	}
+	else if (strcmp(argv[1], "-c") == 0 && atoi(argv[2]) > 0 && atoi(argv[2]) <= 1000000)
+	{
+		clock_t start, finish;
+		double totaltime;
+		ocout.open("E:\\项目\\数独\\Debug\\sudoku.txt");
+		start = clock();
+		for (int i = 0; i < atoi(argv[2]); i++)
+		{
+			xuehao();
+			replace();
+			print();
+		}
+		finish = clock();
+		totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
+		ocout << "\n所需的时间是" << totaltime << "s" << endl;
+		ocout.close();
+		system("pause");
+	}
+	else
+	{
+		printf("wrong\n");
+	}
+	return 0;
 }
