@@ -29,12 +29,12 @@ int model[9][9] = {
 
 int fc(int row, int col)
 {
-	for (int j = 0; j < 9; j++)//排除行中的重复数
+	for (int j = 0; j < 9; j++)//鎺掗櫎琛屼腑鐨勯噸澶嶆暟
 	{
 		if (chess[row][j] == chess[row][col] && j != col)
 			return 0;
 	}
-	for (int i = 0; i < 9; i++)//排除列中的重复数
+	for (int i = 0; i < 9; i++)//鎺掗櫎鍒椾腑鐨勯噸澶嶆暟
 	{
 		if (chess[i][col] == chess[row][col] && i != row)
 			return 0;
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 	if (strcmp(argv[1], "-s") == 0)
 	{
 		flag = 0;
-		ocout.open("E:\\项目\\数独\\Debug\\sudoku.txt");
+		ocout.open("E:\\椤圭洰\\鏁扮嫭\\Debug\\sudoku.txt");
 		for (int i = 0; i < 9; i++)
 		{
 			for (int j = 0; j < 9; j++)
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
 	{
 		clock_t start, finish;
 		double totaltime;
-		ocout.open("E:\\项目\\数独\\Debug\\sudoku.txt");
+		ocout.open("E:\\椤圭洰\\鏁扮嫭\\Debug\\sudoku.txt");
 		start = clock();
 		for (int i = 0; i < atoi(argv[2]); i++)
 		{
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
 		}
 		finish = clock();
 		totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
-		ocout << "\n所需的时间是" << totaltime << "s" << endl;
+		ocout << "\n鎵�闇�鐨勬椂闂存槸" << totaltime << "s" << endl;
 		ocout.close();
 		system("pause");
 	}
