@@ -12,25 +12,26 @@ int temp[9];
 
 RandomNumber R;
 ofstream ocout;
+FILE *fp1;
 int flag;
 
 int fc(int row, int col)
 {
-	for (int j = 0; j < 9; j++)//ÅÅ³ýÐÐÖÐµÄÖØ¸´Êý
+	for (int j = 0; j < 9; j++)//æŽ’é™¤è¡Œä¸­çš„é‡å¤æ•°
 	{
 		if (chess[row][j] == chess[row][col] && j != col)
 			return 0;
 	}
-	for (int i = 0; i < 9; i++)//ÅÅ³ýÁÐÖÐµÄÖØ¸´Êý
+	for (int i = 0; i < 9; i++)//æŽ’é™¤åˆ—ä¸­çš„é‡å¤æ•°
 	{
 		if (chess[i][col] == chess[row][col] && i != row)
 			return 0;
 	}
-	int tempRow = row / 3 * 3;
-	int tempCol = col / 3 * 3;
-	for (int j = tempRow; j< tempRow + 3; ++j)
+	int temprow = row / 3 * 3;
+	int tempcol = col / 3 * 3;
+	for (int j = temprow; j< temprow + 3; ++j)
 	{
-		for (int k = tempCol; k < tempCol + 3; ++k) {
+		for (int k = tempcol; k < tempcol + 3; ++k) {
 			if (chess[j][k] == chess[row][col] && j != row &&k != col) {
 				return 0;
 			}
@@ -39,7 +40,7 @@ int fc(int row, int col)
 	return 1;
 }
 
-void backtrace(int count)//ÉîËÑÓë»ØËÝ
+void backtrace(int count)//æ·±æœä¸Žå›žæº¯
 {
 	if (count == 81)
 	{
@@ -77,7 +78,7 @@ void backtrace(int count)//ÉîËÑÓë»ØËÝ
 	}
 }
 
-void random()//Ëæ»úÑ¡³öÒ»¸ö1-9µÄËæ»úÊý
+void random()//éšæœºé€‰å‡ºä¸€ä¸ª1-9çš„éšæœºæ•°
 {
 	for (int i = 0; i < 9; i++)
 		temp[i] = 0;
@@ -95,7 +96,7 @@ void random()//Ëæ»úÑ¡³öÒ»¸ö1-9µÄËæ»úÊý
 	}
 }
 
-void xuehao()//½«Éú³ÉÊý¶ÀÖÕ¾ÖµÚÒ»ÐÐµÚÒ»ÁÐµÄÊý×Ö¸Ä³ÉÓë×Ô¼ºÑ§ºÅÏë¹ØµÄÊý×Ö
+void xuehao()//å°†ç”Ÿæˆæ•°ç‹¬ç»ˆå±€ç¬¬ä¸€è¡Œç¬¬ä¸€åˆ—çš„æ•°å­—æ”¹æˆä¸Žè‡ªå·±å­¦å·æƒ³å…³çš„æ•°å­—
 {
 	random();
 	for (int i = 0; i < 9; i++)
@@ -116,16 +117,35 @@ int main(int argc, char *argv[])
 {
 	memset(chess, 0, sizeof(int)* 9 * 9);
 	if (argc != 3)
-		printf("wrong\n");
-	if (strcmp(argv[1], "-s") == 0)//Çó½âÊý¶À
+		printf("error\n");
+	if (strcmp(argv[1], "-s") == 0)//æ±‚è§£æ•°ç‹¬
 	{
 		flag = 0;
 		ocout.open("sudoku.txt");
-		for (int i = 0; i < 9; i++)
+		fp1 = fopen(argv[2], "r");
+		char str[100];
+		if (NULL == fp1)
 		{
-			for (int j = 0; j < 9; j++)
+			printf("error\n");
+			return 0;
+		}
+		int i = 0;
+		int k = 0;
+		while (!feof(fp1))
+		{
+			memset(str, 0, sizeof(str));
+			fgets(str, sizeof(str)-1, fp1); 
+			if (str[0] == '\n' || str[0] == '\0')
+				continue;
+			else
 			{
-				scanf("%d", &chess[i][j]);
+				for (int j = 0; j < 17; j = j + 2)
+				{
+					chess[i][k] = str[j] - '0';
+					k++;
+				}
+				i++;
+				k = 0;
 			}
 		}
 		backtrace(0);
@@ -133,7 +153,7 @@ int main(int argc, char *argv[])
 		system("pause");
 		return 0;
 	}
-	else if (strcmp(argv[1], "-c") == 0 && atoi(argv[2]) > 0 && atoi(argv[2]) <= 1000000)//Éú³ÉÊý¶ÀÖÕÅÌ
+	else if (strcmp(argv[1], "-c") == 0 && atoi(argv[2]) > 0 && atoi(argv[2]) <= 1000000)//ç”Ÿæˆæ•°ç‹¬ç»ˆç›˜
 	{
 		flag = 0;
 		clock_t start, finish;
@@ -146,11 +166,11 @@ int main(int argc, char *argv[])
 		}
 		finish = clock();
 		printf("%dms\n", (finish - start));
-		ocout << "ËùÐèÒªµÄÊ±¼äÎª" << (finish - start) << "ms" << endl;
+		ocout << "æ‰€éœ€è¦çš„æ—¶é—´ä¸º" << (finish - start) << "ms" << endl;
 		ocout.close();
 		system("pause");
 	}
 	else
-		printf("wrong\n");
+		printf("error\n");
 	return 0;
 }
