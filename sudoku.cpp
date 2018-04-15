@@ -17,12 +17,12 @@ int flag;
 
 int fc(int row, int col)
 {
-	for (int j = 0; j < 9; j++)//排除行中的重复数
+	for (int j = 0; j < 9; j++)//排除列重复的随机数
 	{
 		if (chess[row][j] == chess[row][col] && j != col)
 			return 0;
 	}
-	for (int i = 0; i < 9; i++)//排除列中的重复数
+	for (int i = 0; i < 9; i++)//排除行重复的随机数
 	{
 		if (chess[i][col] == chess[row][col] && i != row)
 			return 0;
@@ -32,7 +32,7 @@ int fc(int row, int col)
 	for (int j = temprow; j< temprow + 3; ++j)
 	{
 		for (int k = tempcol; k < tempcol + 3; ++k) {
-			if (chess[j][k] == chess[row][col] && j != row &&k != col) {
+			if (chess[j][k] == chess[row][col] && j != row && k != col) {
 				return 0;
 			}
 		}
@@ -78,7 +78,7 @@ void backtrace(int count)//深搜与回溯
 	}
 }
 
-void random()//随机选出一个1-9的随机数
+void random()//找到1-9的随机数
 {
 	for (int i = 0; i < 9; i++)
 		temp[i] = 0;
@@ -96,7 +96,7 @@ void random()//随机选出一个1-9的随机数
 	}
 }
 
-void xuehao()//将生成数独终局第一行第一列的数字改成与自己学号想关的数字
+void xuehao()
 {
 	random();
 	for (int i = 0; i < 9; i++)
@@ -115,12 +115,11 @@ void xuehao()//将生成数独终局第一行第一列的数字改成与自己�
 
 int main(int argc, char *argv[])
 {
-	memset(chess, 0, sizeof(int)* 9 * 9);
+	memset(chess, 0, sizeof(int) * 9 * 9);
 	if (argc != 3)
 		printf("error\n");
-	if (strcmp(argv[1], "-s") == 0)//求解数独
+	if (strcmp(argv[1], "-s") == 0)
 	{
-		flag = 0;
 		ocout.open("sudoku.txt");
 		fp1 = fopen(argv[2], "r");
 		char str[100];
@@ -134,7 +133,7 @@ int main(int argc, char *argv[])
 		while (!feof(fp1))
 		{
 			memset(str, 0, sizeof(str));
-			fgets(str, sizeof(str)-1, fp1); 
+			fgets(str, sizeof(str) - 1, fp1);
 			if (str[0] == '\n' || str[0] == '\0')
 				continue;
 			else
@@ -147,13 +146,20 @@ int main(int argc, char *argv[])
 				i++;
 				k = 0;
 			}
-		}
-		backtrace(0);
+			if (i == 9)
+			{	
+				backtrace(0);
+				i = 0;
+				flag = 0;
+				memset(chess, 0, sizeof(int) * 9 * 9);
+			}
+		}	
+
 		ocout.close();
 		system("pause");
 		return 0;
 	}
-	else if (strcmp(argv[1], "-c") == 0 && atoi(argv[2]) > 0 && atoi(argv[2]) <= 1000000)//生成数独终盘
+	else if (strcmp(argv[1], "-c") == 0 && atoi(argv[2]) > 0 && atoi(argv[2]) <= 1000000)
 	{
 		flag = 0;
 		clock_t start, finish;
